@@ -15,6 +15,30 @@ class DeviceViewController: UIViewController {
     
     var device: MetaWear!
     
+    @IBAction func startPressed(_ sender: Any) {
+        let board = device.board
+        guard mbl_mw_metawearboard_lookup_module(board, MBL_MW_MODULE_ACCELEROMETER) != MBL_MW_MODULE_TYPE_NA else {
+            print("No accelerometer")
+            return
+        }
+        let signal = mbl_mw_acc_get_acceleration_data_signal(board)
+        mbl_mw_datasignal_subscribe(signal, bridge(obj: self)) { (context, data) in
+            let _self: DeviceViewController = bridge(ptr: context!)
+            let obj: MblMwCartesianFloat = data!.pointee.valueAs()
+            print(obj)
+        }
+        mbl_mw_acc_enable_acceleration_sampling(board)
+        mbl_mw_acc_start(board)
+    }
+    
+    @IBAction func stopPressed(_ sender: Any) {
+        let board = device.board
+        let signal = mbl_mw_acc_get_acceleration_data_signal(board)
+        mbl_mw_acc_stop(board)
+        mbl_mw_acc_disable_acceleration_sampling(board)
+        mbl_mw_datasignal_unsubscribe(signal)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated);
         
