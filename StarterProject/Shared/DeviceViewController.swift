@@ -15,8 +15,42 @@ class DeviceViewController: UIViewController {
     
     var device: MetaWear!
     
+    @IBAction func calibratePressed(_ sender: Any) {
+        let board = device.board
+
+        // set fusion mode to ndof (n degress of freedom)
+        mbl_mw_sensor_fusion_set_mode(board, MBL_MW_SENSOR_FUSION_MODE_NDOF);
+        // set acceleration rangen to +/-8G, note accelerometer is configured here
+        mbl_mw_sensor_fusion_set_acc_range(board, MBL_MW_SENSOR_FUSION_ACC_RANGE_8G);
+        // write changes to the board
+        mbl_mw_sensor_fusion_write_config(board);
+        
+        /*  CONVERT TO SWIFT FOR DATA CALIBRATION READ AND STORAGE
+        let signal = mbl_mw_sensor_fusion_calibration_state_data_signal(board);
+        mbl_mw_datasignal_subscribe(signal, nullptr, [](void* context, const MblMwData* data) {
+            let casted = (MblMwCalibrationState*) data->value;
+            print ("calibration state: {accelerometer: " << casted->accelerometer
+                << ", gyroscope: " << casted->gyroscope
+                << ", magnetometer: " << casted->magnetometer
+                << "}" << endl;
+        });
+        
+        mbl_mw_datasignal_read(signal);
+        */
+        self.updateLabel("Calibrating and Configuring...")
+
+        let signal = mbl_mw_sensor_fusion_calibration_state_data_signal(board);
+        mbl_mw_datasignal_read(signal);
+        print("Signal: ", signal)
+
+    }
+    
+    
+    
     @IBAction func startPressed(_ sender: Any) {
         let board = device.board
+        
+        /** Acceleration **/
         guard mbl_mw_metawearboard_lookup_module(board, MBL_MW_MODULE_ACCELEROMETER) != MBL_MW_MODULE_TYPE_NA else {
             print("No accelerometer")
             return
@@ -29,13 +63,27 @@ class DeviceViewController: UIViewController {
         }
         mbl_mw_acc_enable_acceleration_sampling(board)
         mbl_mw_acc_start(board)
+ 
+
+        /** Stream Quaterion
+        let signal = mbl_mw_sensor_fusion_get_data_signal(board, MBL_MW_SENSOR_FUSION_DATA_QUATERNION);
+        mbl_mw_datasignal_subscribe(signal, bridge(obj: self)) { (context, data) in
+            let _self: DeviceViewController = bridge(ptr: context!)
+            let obj: MblMwQuaternion = data!.pointee.valueAs()
+            print(obj)
+        }
+
+        mbl_mw_sensor_fusion_enable_data(board, MBL_MW_SENSOR_FUSION_DATA_QUATERNION);
+        mbl_mw_sensor_fusion_start(board);
+        **/
     }
     
     @IBAction func stopPressed(_ sender: Any) {
         let board = device.board
         let signal = mbl_mw_acc_get_acceleration_data_signal(board)
-        mbl_mw_acc_stop(board)
-        mbl_mw_acc_disable_acceleration_sampling(board)
+        //mbl_mw_acc_stop(board)
+        //mbl_mw_acc_disable_acceleration_sampling(board)
+        mbl_mw_sensor_fusion_stop(board)
         mbl_mw_datasignal_unsubscribe(signal)
     }
     
