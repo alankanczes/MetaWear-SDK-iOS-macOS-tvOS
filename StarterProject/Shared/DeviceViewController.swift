@@ -12,8 +12,10 @@ import MetaWearCpp
 
 class DeviceViewController: UIViewController {
     @IBOutlet weak var deviceStatus: UILabel!
-    
+    @IBOutlet weak var textField: UITextView!
+
     var device: MetaWear!
+    var textMessage: String! = "Empty"
     
     @IBAction func calibratePressed(_ sender: Any) {
         let board = device.board
@@ -50,7 +52,7 @@ class DeviceViewController: UIViewController {
     @IBAction func startPressed(_ sender: Any) {
         let board = device.board
         
-        /** Acceleration **/
+        /** Acceleration
         guard mbl_mw_metawearboard_lookup_module(board, MBL_MW_MODULE_ACCELEROMETER) != MBL_MW_MODULE_TYPE_NA else {
             print("No accelerometer")
             return
@@ -63,9 +65,10 @@ class DeviceViewController: UIViewController {
         }
         mbl_mw_acc_enable_acceleration_sampling(board)
         mbl_mw_acc_start(board)
+        **/
  
 
-        /** Stream Quaterion
+        /** Stream Quaterion **/
         let signal = mbl_mw_sensor_fusion_get_data_signal(board, MBL_MW_SENSOR_FUSION_DATA_QUATERNION);
         mbl_mw_datasignal_subscribe(signal, bridge(obj: self)) { (context, data) in
             let _self: DeviceViewController = bridge(ptr: context!)
@@ -75,8 +78,99 @@ class DeviceViewController: UIViewController {
 
         mbl_mw_sensor_fusion_enable_data(board, MBL_MW_SENSOR_FUSION_DATA_QUATERNION);
         mbl_mw_sensor_fusion_start(board);
-        **/
+        /** **/
     }
+    
+    @IBAction func deviceInformation(_ sender: Any) {
+        let board = device.board
+        
+        // UnsafePointer<MblMwDeviceInformation>?
+        let deviceInfoPtr = mbl_mw_metawearboard_get_device_information(board)
+        let deviceInfo = deviceInfoPtr?.pointee
+        let manufacturer = String(cString: (deviceInfo?.manufacturer)!)
+        let modelNumber = String(cString: (deviceInfo?.model_number)!)
+        let firmwareRevision = String(cString: (deviceInfo?.firmware_revision)!)
+        let serialNumber = String(cString: (deviceInfo?.serial_number)!)
+        let hardwareRevision = String(cString: (deviceInfo?.hardware_revision)!)
+
+        let message = ("*Device Information* \n\tManufacturer: \(manufacturer)\n\tModel: \(modelNumber)\n\tFirmware Rev: \(firmwareRevision)\n\tSerial Number: \(serialNumber)\n\tHardware Revision: \(hardwareRevision)\n\n ")
+        print(message)
+
+        self.textMessage = message
+        
+        self.textField.text = textMessage
+
+    }
+    
+    /* Start calibration - press stop when complete */
+    @IBAction func startCalibrate(_ sender: Any) {
+        self.updateLabel("Starting Calibration... ")
+        print ("Starting calibration...")
+        
+        let board = device.board
+        let signal = mbl_mw_sensor_fusion_calibration_state_data_signal(board)
+        mbl_mw_datasignal_subscribe(signal,  bridge(obj: self), { (context, data) in
+            let _self: DeviceViewController = bridge(ptr: context!)
+            let obj: MblMwCalibrationState = data!.pointee.valueAs()
+            print("Calibration Values: \(obj)")
+            _self.textMessage = "Calibration Values: \(obj)"
+            })
+        
+        self.textField.text = textMessage
+
+    }
+    
+    @IBAction func checkCalibration(_ sender: Any) {
+        self.updateLabel("Checking Calibration...")
+        print ("Checking calibration...")
+        
+        let board = device.board
+        let signal = mbl_mw_sensor_fusion_calibration_state_data_signal(board)
+        mbl_mw_datasignal_subscribe(signal,  bridge(obj: self), { (context, data) in
+            let _self: DeviceViewController = bridge(ptr: context!)
+            let obj: MblMwCalibrationState = data!.pointee.valueAs()
+            print("Calibration Values: \(obj)")
+            _self.textMessage = "Calibration Values: \(obj)"
+        })
+
+        // Force the read, calling the callback closure.
+        mbl_mw_datasignal_read(signal);
+
+        self.textField.text = textMessage
+
+    }
+
+    @IBAction func stopCalibration(_ sender: Any) {
+        self.updateLabel("Stopping Calibration...")
+        print ("Stopping calibration...")
+        
+        let board = device.board
+        
+         mbl_mw_sensor_fusion_read_calibration_data(board,  bridge(obj: self), { (context, board, data) in
+            print ("Preparing to write calibration data...")
+
+            // returns null if an error occured, such as using with unsupported firmware
+            // write to board, or save to local file to always have on hand
+            guard let newdata = data else {
+                print ("ERROR: No calibration data returned.")
+                return
+            }
+            // calibration data is reloaded everytime mode changes
+            print ("Writing calibration data...")
+            mbl_mw_sensor_fusion_write_calibration_data(board, data);
+                
+            // free memory after we're done with the pointer
+            print ("Freeing memory on board...")
+            // FIXME mbl_mw_memory_free(newData);
+            
+            let message = "Calibration done.";
+            //let _self: DeviceViewController = bridge(ptr: context!)
+            //_self.textMessage = message
+        })
+        
+        self.updateLabel("Calibration Stopped")
+    }
+    
     
     @IBAction func stopPressed(_ sender: Any) {
         let board = device.board

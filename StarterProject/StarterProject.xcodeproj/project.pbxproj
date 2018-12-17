@@ -22,7 +22,6 @@
 		402973841DB839EA00EC8C32 /* DeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402973811DB839EA00EC8C32 /* DeviceViewController.swift */; };
 		402973851DB839EA00EC8C32 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402973821DB839EA00EC8C32 /* MainTableViewController.swift */; };
 		402973861DB839ED00EC8C32 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402973801DB839EA00EC8C32 /* AppDelegate.swift */; };
-		402973871DB839ED00EC8C32 /* DeviceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402973811DB839EA00EC8C32 /* DeviceViewController.swift */; };
 		402973881DB839ED00EC8C32 /* MainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402973821DB839EA00EC8C32 /* MainTableViewController.swift */; };
 		40F7881D209B6D3E002D5E27 /* DeviceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F7881C209B6D3E002D5E27 /* DeviceState.swift */; };
 		40F7881E209B6D3E002D5E27 /* DeviceState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40F7881C209B6D3E002D5E27 /* DeviceState.swift */; };
@@ -475,7 +474,6 @@
 				40F7881E209B6D3E002D5E27 /* DeviceState.swift in Sources */,
 				402973861DB839ED00EC8C32 /* AppDelegate.swift in Sources */,
 				4029737F1DB839B200EC8C32 /* ScanTableViewController.swift in Sources */,
-				402973871DB839ED00EC8C32 /* DeviceViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

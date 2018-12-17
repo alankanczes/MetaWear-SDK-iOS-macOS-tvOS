@@ -227,6 +227,14 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IhV-Js-Rz8">
+                                <rect key="frame" x="67" y="195" width="77" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Start"/>
+                                <connections>
+                                    <action selector="startPressed:" destination="XFA-76-WTO" eventType="touchUpInside" id="Var-F4-BF9"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f9M-Du-ak9">
                                 <rect key="frame" x="237" y="195" width="70" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -236,19 +244,44 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gl7-Yt-EKw">
-                                <rect key="frame" x="146" y="128" width="95" height="30"/>
+                                <rect key="frame" x="52" y="291" width="130" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Calibrate"/>
+                                <state key="normal" title="Start Calibration"/>
                                 <connections>
                                     <action selector="calibratePressed:" destination="XFA-76-WTO" eventType="touchUpInside" id="cAC-A2-p42"/>
+                                    <action selector="startCalibrate:" destination="XFA-76-WTO" eventType="touchUpInside" id="xza-lK-REY"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IhV-Js-Rz8">
-                                <rect key="frame" x="67" y="195" width="77" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vy8-Cq-yFL">
+                                <rect key="frame" x="52" y="367" width="130" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Start"/>
+                                <state key="normal" title="Stop Calibration"/>
                                 <connections>
-                                    <action selector="startPressed:" destination="XFA-76-WTO" eventType="touchUpInside" id="Var-F4-BF9"/>
+                                    <action selector="stopCalibration:" destination="XFA-76-WTO" eventType="touchUpInside" id="FwC-jR-yFx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YCn-dK-Kob">
+                                <rect key="frame" x="52" y="329" width="130" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Check State"/>
+                                <connections>
+                                    <action selector="checkCalibration:" destination="XFA-76-WTO" eventType="touchUpInside" id="eH7-dr-hbc"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="QuH-Tw-w5S">
+                                <rect key="frame" x="52" y="424" width="240" height="128"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lxv-SX-lXZ">
+                                <rect key="frame" x="52" y="253" width="130" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Device Info"/>
+                                <connections>
+                                    <action selector="deviceInformation:" destination="XFA-76-WTO" eventType="touchUpInside" id="9yd-FJ-PaG"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -261,6 +294,7 @@
                     <navigationItem key="navigationItem" title="Device" id="zSU-Fp-fTT"/>
                     <connections>
                         <outlet property="deviceStatus" destination="moM-jr-XgN" id="0mB-By-sMs"/>
+                        <outlet property="textField" destination="QuH-Tw-w5S" id="2cg-bG-ZTc"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ozi-iQ-HNv" userLabel="First Responder" sceneMemberID="firstResponder"/>
