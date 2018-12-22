@@ -151,7 +151,7 @@ class DeviceViewController: UIViewController {
 
             // returns null if an error occured, such as using with unsupported firmware
             // write to board, or save to local file to always have on hand
-            guard let newdata = data else {
+            guard data != nil else {
                 print ("ERROR: No calibration data returned.")
                 return
             }
@@ -163,12 +163,12 @@ class DeviceViewController: UIViewController {
             print ("Freeing memory on board...")
             // FIXME mbl_mw_memory_free(newData);
             
-            let message = "Calibration done.";
+            let textMessage = "Calibration done.";
             //let _self: DeviceViewController = bridge(ptr: context!)
-            //_self.textMessage = message
+            //_self.textMessage = textMessage
         })
         
-        self.updateLabel("Calibration Stopped")
+        self.updateLabel(textMessage)
     }
     
     
